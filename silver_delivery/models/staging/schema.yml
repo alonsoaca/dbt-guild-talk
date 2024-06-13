@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: stg_oa_users
+    description: One record per oa user
+    columns:
+      - name: user_id
+        description: Primary key
+        data_tests:
+          - unique
+          - not_null
+      - name: full_name
+        description: Last name, First Name
+        data_tests:
+          - not_null
+
+  - name: stg_timesheets
+    description: Timesheets for the time spent by every users on the projects they work on.
+    columns:
+      - name: user_id
+        description: User that entered thet timesheet
+        data_tests:
+          - not_null
+      - name: project_id
+        data_tests:
+          - not_null
