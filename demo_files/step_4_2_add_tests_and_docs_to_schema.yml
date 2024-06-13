@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: dim_project
+    description: Dimension table for all projects in the company
+    columns:
+      - name: project_id
+        description: Primary key
+        data_tests:
+          - unique
+          - not_null
+      - name: project_name
+        description: Name of the project
+        data_tests:
+          - not_null
+      - name: customer_name
+        description: Customer Name
+        data_tests:
+          - not_null
+      - name: mu
+        description: Market Unit
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['SAM', 'Corporate', 'CIGNA', 'MxCAM', 'West HCN & TMTSW', 'East BFSI & PSE']
+      - name: project_stage_name
+        description: Name of the project stage.
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['WAR', 'Lost Opportunity', 'Project Setup', 'Active', 'Closed', 'On-Hold', 'Templates', 'Oppportunity Best Case', 'Committed Opportunity']
+
+  - name: dim_user
+    description: Dimension table for all users in the company
+    columns:
+      - name: user_id
+        description: Primary Key
+        data_tests:
+          - not_null
+      - name: full_name
+        description: Name of the user in the format of Last Name, First Name
+        data_tests:
+          - not_null
+
+  - name: fact_time
+    description: Fact table for employee and project timesheets.
+    columns:
+      - name: user_id
+        description: User id for the employee that enter the timesheet
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_user')
+              field: user_id
+      - name: project_id
+        description:  Project id for the project timesheet
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_project')
+              field: project_id
